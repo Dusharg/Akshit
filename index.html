@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine? 💘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+    z-index: 10;
+    animation: pop 0.8s ease;
+}
+
+@keyframes pop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+h1 {
+    color: #ff3f6c;
+}
+
+p {
+    color: #555;
+    font-size: 18px;
+}
+
+.teddy img {
+    width: 140px;
+    margin: 15px 0;
+}
+
+.buttons {
+    position: relative;
+    height: 110px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 28px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    position: absolute;
+    transition: 0.3s;
+}
+
+#yesBtn {
+    background: #ff3f6c;
+    color: white;
+    left: 30px;
+}
+
+#yesBtn:hover {
+    transform: scale(1.1);
+}
+
+#noBtn {
+    background: #ccc;
+    color: #333;
+    right: 30px;
+}
+
+/* Floating hearts */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-120vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: red;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body onclick="startMusic()">
+
+<!-- 🎵 Background Music -->
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4b2c3c2a27.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="card">
+    <h1>Hey <span id="name">My Love</span> 💖</h1>
+
+    <div class="teddy">
+        <img src="https://media.tenor.com/2roX3uxz_68AAAAC/teddy-love.gif" alt="Teddy">
+    </div>
+
+    <p id="message">
+        You make my world brighter every single day 🌸<br>
+        So I have one very important question…
+    </p>
+
+    <h2>Will you be my Valentine? 💘</h2>
+
+    <div class="buttons">
+        <button id="yesBtn">YES 💕</button>
+        <button id="noBtn">NO 💔</button>
+    </div>
+</div>
+
+<script>
+/* PERSONALIZE HERE */
+const personName = "Priya";   // 👈 change name
+const customMessage = "From the moment you entered my life, everything felt warmer, happier & more beautiful 💫";
+
+/* Inject personalization */
+document.getElementById("name").innerText = personName;
+document.getElementById("message").innerHTML = customMessage;
+
+/* Music */
+let musicStarted = false;
+function startMusic() {
+    if (!musicStarted) {
+        document.getElementById("music").play();
+        musicStarted = true;
+    }
+}
+
+/* NO button escape */
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * 250;
+    const y = Math.random() * 80;
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+/* YES button */
+document.getElementById("yesBtn").addEventListener("click", () => {
+
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+    }
+
+    launchConfetti();
+
+    document.getElementById("card").innerHTML = `
+        <h1>I KNEW IT 😍💖</h1>
+        <img src="" width="180">
+        <p>
+            Happy Valentine’s Day, ${personName}! 💕<br><br>
+            You just made my heart officially yours 🥰<br>
+            I can’t wait to make countless memories with you 🌹
+        </p>
+    `;
+});
+
+/* Floating hearts generator */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}, 400);
+
+/* Confetti */
+function launchConfetti() {
+    for (let i = 0; i < 80; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.background = `hsl(${Math.random() * 360},100%,50%)`;
+        confetti.style.animationDuration = Math.random() * 2 + 2 + "s";
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 3000);
+    }
+}
+</script>
+
+</body>
+</html>
